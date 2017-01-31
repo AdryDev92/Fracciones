@@ -3,14 +3,12 @@ package org.thinway;
 public class Main {
 
     public static void main(String[] args) {
-        Fraccion fraccion1 = new Fraccion(2,0);
-        Fraccion fraccion2 = new Fraccion(2,2);
 
-        System.out.print(fraccion1 + " + " + fraccion2 + " = " );
+        Fraccion f1 = new Fraccion(1,7);
+        Fraccion f2 = new Fraccion(4,5);
 
-        fraccion1.sumar(fraccion2);
+        f1.sumar(f2);
 
-        System.out.println(fraccion1);
-
+        System.out.println(f1);
     }
 }

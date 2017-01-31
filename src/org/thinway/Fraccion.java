@@ -94,21 +94,40 @@ public class Fraccion {
 
     // Operaciones
 
-    public void sumar(Fraccion frac){
+    /**
+     * Suma la fracción indicada en el parámetro a la del objeto que manda el mensaje. Guarda el resultado en el objeto.
+     *
+     * @param frac Fraccion que se sumará.
+     */
+    public void sumar(Fraccion frac) {
+
         int mcm = minimoComunMultiplo(this.getDenominador(), frac.getDenominador());
 
-        this.setNumerador(  mcm/this.getDenominador() * this.getNumerador() +
-                            mcm/frac.getDenominador() * frac.getNumerador() );
-        this.setDenominador( mcm );
+        this.setNumerador(mcm / this.getDenominador() * this.getNumerador() +
+                mcm / frac.getDenominador() * frac.getNumerador());
+        this.setDenominador(mcm);
 
         this.simplificar();
-
     }
 
+    /**
+     * Resta la fracción indicada en el parámetro a la del objeto que manda el mensaje. Guarda el resultado en el objeto.
+     *
+     * @param frac Fraccion que se restará.
+     */
+    public void restar(Fraccion frac) {
+
+        int mcm = minimoComunMultiplo(this.getDenominador(), frac.getDenominador());
+
+        this.setNumerador(mcm / this.getDenominador() * this.getNumerador() -
+                mcm / frac.getDenominador() * frac.getNumerador());
+        this.setDenominador(mcm);
+
+        this.simplificar();
+    }
 
     /**
-     * Multiplica dos fracciones y guarda el resultado en la instancia
-     * que lo invoca.
+     * Multiplica dos fracciones y guarda el resultado en la instancia que lo invoca.
      *
      * @param frac Fracción que será el segundo operando de la multiplicación.
      */
@@ -120,8 +139,7 @@ public class Fraccion {
     }
 
     /**
-     * Multiplica dos fracciones y guarda el resultado en la instancia
-     * que lo invoca.
+     * Multiplica dos fracciones y devuelve el resultado.
      *
      * @param frac Fracción que será el segundo operando de la multiplicación.
      */
@@ -137,10 +155,10 @@ public class Fraccion {
     }
 
     /**
-     * Divide dos fracciones y guarda el resultado en la instancia
+     * Divide entre la fracción indicada en el parámetro y guarda el resultado en la instancia
      * que lo invoca.
      *
-     * @param frac Fracción que será el segundo operando de la multiplicación.
+     * @param frac Fracción que será el segundo operando de la división.
      */
     public void dividir(Fraccion frac){
         this.setNumerador(this.getNumerador()*frac.getDenominador());
@@ -149,46 +167,66 @@ public class Fraccion {
         this.simplificar();
     }
 
-
-    // Helpers
-
     /**
+     * Calcula el máximo común divisor de los números pasados como parámetros.
      *
-     * @param a
-     * @param b
-     * @return
+     * @param a Número entero
+     * @param b Número entero
+     *
+     * @return int Máximo Común Divisor de los parámetros.
      */
-    public int mcd(int a, int b){
-        // a: 537, b: 50
-        a = Math.abs(a);
-        b = Math.abs(b);
+    private int mcd(int a, int b){
+        // Se calcula el valor mínimo y máximo de los valores absolutos de los parámetros
+        int min = Math.min(Math.abs(a), Math.abs(b));
+        int max = Math.max(Math.abs(a), Math.abs(b));
+        int resto;
 
-        if (a < b){
-            int aux = a;
-            a = b;
-            b = aux;
+        while( min != 0 ){
+            resto = max % min;
+            max = min;
+            min = resto;
         }
 
-        int resto = a % b;
-
-        while( resto!= 0){
-            b = resto;
-            resto = a % b;
-            a = b;
-        }
-
-        return b;
+        // El valor en max al salir del bucle es el mcd
+        return max;
     }
 
+    /**
+     * Calcula el mímimo común múltiplo de los números pasados como parámetros.
+     *
+     * @param a Número entero
+     * @param b Número entero
+     *
+     * @return int Mínimo Común Múltiplo de los parámetros.
+     */
     private int minimoComunMultiplo(int a, int b){
         return ((a*b) / mcd(a,b));
     }
 
+    /**
+     * Simplifica la fracción.
+     */
     private void simplificar(){
         int maxDiv = mcd(this.getNumerador(),
                         this.getDenominador());
 
         this.setNumerador(this.getNumerador()/maxDiv);
         this.setDenominador(this.getDenominador()/maxDiv);
+    }
+
+    /**
+     * Muestra la fracción en forma de fracción mixta.
+     *
+     * @return String Representación mixta de la fracción.
+     */
+    public String mixta(){
+        int parte_entera = this.getNumerador()/this.getDenominador();
+
+        if( parte_entera > 0) {
+            Fraccion f_entera = new Fraccion(parte_entera);
+            this.restar(f_entera);
+        }
+
+        return ((parte_entera!=0)?parte_entera + " ":"") + this.toString();
     }
 }
