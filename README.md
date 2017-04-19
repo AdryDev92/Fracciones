@@ -1,4 +1,4 @@
-# Fracciones
+# Fracciones Numéricas
 
 Esta sencilla aplicación es un ejemplo de creación y utilización de una sencilla clase 
 en Java.
